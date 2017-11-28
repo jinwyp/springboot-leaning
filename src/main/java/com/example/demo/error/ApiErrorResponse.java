@@ -6,6 +6,7 @@ public class ApiErrorResponse {
     private int code;
     private String message;
 
+
     public ApiErrorResponse(int status, int code, String message) {
         this.status = status;
         this.code = code;
@@ -32,6 +33,5 @@ public class ApiErrorResponse {
                 ", message=" + message +
                 '}';
     }
-
 
 }
