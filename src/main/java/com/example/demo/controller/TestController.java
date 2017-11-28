@@ -42,7 +42,7 @@ public class TestController {
             @ModelAttribute Person person
     ) {
 
-        if (false) {
+        if (true) {
             throw new ConstraintViolationException("error", Collections.emptySet());
         }
 

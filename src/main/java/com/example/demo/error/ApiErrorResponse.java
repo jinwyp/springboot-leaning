@@ -2,18 +2,23 @@ package com.example.demo.error;
 
 public class ApiErrorResponse {
 
-    private int status;
+    private boolean status = false;
     private int code;
     private String message;
 
 
-    public ApiErrorResponse(int status, int code, String message) {
-        this.status = status;
+    public ApiErrorResponse(int code) {
         this.code = code;
         this.message = message;
     }
 
-    public int getStatus() {
+
+    public ApiErrorResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public boolean getStatus() {
         return status;
     }
 
@@ -28,7 +33,6 @@ public class ApiErrorResponse {
     @Override
     public String toString() {
         return "ApiErrorResponse{" +
-                "status=" + status +
                 ", code=" + code +
                 ", message=" + message +
                 '}';

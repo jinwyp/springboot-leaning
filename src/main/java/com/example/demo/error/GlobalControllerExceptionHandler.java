@@ -36,7 +36,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrorResponse noHandlerFoundException(Exception ex) {
 
-        return new ApiErrorResponse(404, 404, ex.getMessage());
+        logger.error(" \n ==================== 404 Error : ", ex.getMessage(), ex);
+        return new ApiErrorResponse(404, ex.getMessage());
     }
 
 
@@ -45,7 +46,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse constraintViolationException(ConstraintViolationException ex) {
 
-        return new ApiErrorResponse(400, 1001, ex.getMessage());
+        logger.error(" \n ==================== 400 Error : ", ex.getMessage(), ex);
+        return new ApiErrorResponse(1001, ex.getMessage());
     }
 
 
@@ -53,7 +55,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException ex) {
 
-        return new ApiErrorResponse(400, 1002, ex.getMessage());
+        logger.error(" \n ==================== 400 Error : ", ex.getMessage(), ex);
+        return new ApiErrorResponse(1002, ex.getMessage());
     }
 
 
@@ -62,8 +65,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiErrorResponse unknownException(Exception ex) {
 
-        logger.error(" \n ==================== 500 Error : ", ex);
-        return new ApiErrorResponse(500, 500, ex.getMessage());
+        logger.error(" \n ==================== 500 Error : ", ex.getMessage(), ex);
+        return new ApiErrorResponse(500, ex.getMessage());
     }
 
 }
