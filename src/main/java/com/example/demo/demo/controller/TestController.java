@@ -33,10 +33,6 @@ public class TestController {
         }
 
 
-
-        logger.info("++++++++ This is an info message");
-
-
         return comment;
     }
 
@@ -45,8 +41,9 @@ public class TestController {
             @ModelAttribute Person person
     ) {
 
-        if (true) {
-            throw new ConstraintViolationException("error", Collections.emptySet());
+        if (person.getComment() == null || person.getComment().isEmpty() ) {
+            throw new BusinessException("commentRequired");
+//            throw new BusinessException(1000, "comment 字段为空, 请重新输入", "comment");
         }
 
         logger.info("--------------");
@@ -59,7 +56,7 @@ public class TestController {
 
 
     @PostMapping(value = "/person")
-    public ResponseEntity< Person > savePerson(
+    public Person savePerson(
             @RequestBody @Valid Person person
     ) {
 
@@ -67,12 +64,10 @@ public class TestController {
         logger.info("This is an info message");
         logger.warn("This is a warn message2222");
 
-
-
         logger.error("This is an error message");
 
 
-        return new ResponseEntity<Person> (person, HttpStatus.CREATED);
+        return person;
     }
 
 

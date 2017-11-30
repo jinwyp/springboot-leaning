@@ -50,7 +50,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiErrorResponse businessException(BusinessException ex) {
 
-        logger.error("\n ==================== 400 Error : " +  ex.getMessage()  + ". Code: " + ex.getCode() + ". Message: "+ ex.getErrorMessage() + "\n" + stackTraceToString(ex, "com.example.demo"));
+        logger.error("\n ==================== 400 Error : " +  ex.getMessage()  + ". Code: " + ex.getCode() + ". Message: "+ ex.getErrorMessage() + "\n" + stackTraceToString(ex, "com.example.demo", 0));
         return new ApiErrorResponse(ex.getCode(), ex.getErrorMessage());
     }
 
@@ -87,27 +87,45 @@ public class GlobalControllerExceptionHandler {
      * https://github.com/0opslab/utils/blob/master/src/main/java/com/opslab/util/ExceptionUtil.java
      * 可以通过使用我开源的工具包获取
      *
-     * @param e 异常信息
+     * @param exceptionOriginal 异常信息
      * @param packageName 只转换某个包下的信息
+     * @param showLines 只显示几行
      * @return string
      */
 
-    public static String stackTraceToString(Throwable e, String packageName) {
+    public static String stackTraceToString(Throwable exceptionOriginal, String packageName, int showLines) {
         StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw, true));
-        String str = sw.toString();
+        exceptionOriginal.printStackTrace(new PrintWriter(sw, true));
+
+        String tempString = sw.toString();
+
         if (packageName == null) {
-            return str;
+            return tempString;
         }
-        String[] arrs = str.split("\n");
+        String[] arrs = tempString.split("\n");
         StringBuffer sbuf = new StringBuffer();
         sbuf.append(arrs[0] + "\n");
-        for (int i = 0; i < arrs.length; i++) {
-            String temp = arrs[i];
-            if (temp != null && temp.indexOf(packageName) > 0) {
+
+        if (showLines > 0 ) {
+
+            if (showLines > arrs.length) {
+                showLines = arrs.length;
+            }
+
+            for (int i = 1; i < showLines; i++) {
+                String temp = arrs[i];
                 sbuf.append(temp + "\n");
             }
+        } else {
+            for (int i = 1; i < arrs.length; i++) {
+                String temp = arrs[i];
+                if (temp != null && temp.indexOf(packageName) > 0) {
+                    sbuf.append(temp + "\n");
+                }
+            }
         }
+
+
         return sbuf.toString();
     }
 }
