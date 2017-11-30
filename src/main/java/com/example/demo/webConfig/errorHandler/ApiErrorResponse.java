@@ -1,4 +1,4 @@
-package com.example.demo.error;
+package com.example.demo.webConfig.errorHandler;
 
 public class ApiErrorResponse {
 
@@ -9,7 +9,7 @@ public class ApiErrorResponse {
 
     public ApiErrorResponse(int code) {
         this.code = code;
-        this.message = message;
+        this.message = "";
     }
 
 
@@ -18,17 +18,31 @@ public class ApiErrorResponse {
         this.message = message;
     }
 
-    public boolean getStatus() {
+
+    public boolean isStatus() {
         return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getCode() {
         return code;
     }
 
+    public void setCode(int code) {
+        this.code = code;
+    }
+
     public String getMessage() {
         return message;
     }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
 
     @Override
     public String toString() {

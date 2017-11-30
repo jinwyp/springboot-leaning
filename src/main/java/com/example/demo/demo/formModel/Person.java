@@ -1,4 +1,4 @@
-package com.example.demo.FormModel;
+package com.example.demo.demo.formModel;
 
 import org.hibernate.validator.constraints.NotBlank;
 

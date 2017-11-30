@@ -1,5 +1,6 @@
-package com.example.demo.interceptor;
+package com.example.demo.webConfig;
 
+import com.example.demo.webConfig.interceptor.DemoRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;

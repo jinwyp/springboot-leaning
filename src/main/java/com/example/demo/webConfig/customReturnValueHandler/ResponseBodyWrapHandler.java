@@ -1,6 +1,6 @@
-package com.example.demo.customReturnValueHandler;
+package com.example.demo.webConfig.customReturnValueHandler;
 
-import com.example.demo.error.ApiSuccessResponse;
+import com.example.demo.webConfig.errorHandler.ApiSuccessResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;

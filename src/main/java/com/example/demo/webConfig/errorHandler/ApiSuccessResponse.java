@@ -1,4 +1,4 @@
-package com.example.demo.error;
+package com.example.demo.webConfig.errorHandler;
 
 public class ApiSuccessResponse {
 

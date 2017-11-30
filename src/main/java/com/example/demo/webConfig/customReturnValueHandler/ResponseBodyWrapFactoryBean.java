@@ -1,4 +1,4 @@
-package com.example.demo.customReturnValueHandler;
+package com.example.demo.webConfig.customReturnValueHandler;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

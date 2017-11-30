@@ -1,11 +1,11 @@
-package com.example.demo.controller;
+package com.example.demo.demo.controller;
 
 
-import com.example.demo.FormModel.Person;
+import com.example.demo.demo.formModel.Person;
+import com.example.demo.webConfig.businessException.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +24,15 @@ public class TestController {
     @GetMapping(value = "/person")
     public String getPerson(
             @RequestParam(value="id", defaultValue = "10") long id,
-            @RequestParam(value="comment", defaultValue = "cool") String comment
+            @RequestParam(value="comment", defaultValue = "") String comment
     ) {
 
-        if (false) {
-            throw new ConstraintViolationException("error", Collections.emptySet());
+        if (comment == null || comment.isEmpty() ) {
+            throw new BusinessException("commentRequired");
+//            throw new BusinessException(1000, "comment 字段为空, 请重新输入", "comment");
         }
+
+
 
         logger.info("++++++++ This is an info message");
 
@@ -62,7 +65,10 @@ public class TestController {
 
         logger.debug("This is a debug message");
         logger.info("This is an info message");
-        logger.warn("This is a warn message");
+        logger.warn("This is a warn message2222");
+
+
+
         logger.error("This is an error message");
 
 

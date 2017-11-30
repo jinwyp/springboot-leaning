@@ -1,4 +1,4 @@
-package com.example.demo.interceptor;
+package com.example.demo.webConfig;
 
 
 import org.springframework.context.annotation.Bean;

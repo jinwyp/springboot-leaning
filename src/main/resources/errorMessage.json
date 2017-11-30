@@ -1,0 +1,14 @@
+{
+    "usernameRequired" : {"code":1001, "message":"Field validation error,  username is required", "field":"username"},
+    "passwordRequired" : {"code":1002, "message":"Field validation error,  password is required", "field":"password"},
+    "passwordNewRequired" : {"code":1003, "message":"Field validation error,  new password is required", "field":"newPassword"},
+    "emailRequired" : {"code":1004, "message":"Field validation error, Email is required", "field":"email"},
+    "mobileRequired" : {"code":1005, "message":"Field validation error, mobile number is required", "field":"mobilePhone"},
+    "captchaRequired" :  {"code":1007, "message":"Field validation error, captcha is required", "field":"captcha"},
+    "smsCodeRequired" :  {"code":1008, "message":"Field validation error, sms code is required", "field":"smsCode"},
+
+
+
+    "commentRequired" :  {"code":2001, "message":"Field validation error, comment is required", "field":"comment"}
+
+}
