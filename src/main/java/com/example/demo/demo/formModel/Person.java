@@ -3,6 +3,7 @@ package com.example.demo.demo.formModel;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Person {
 
@@ -10,6 +11,7 @@ public class Person {
     private  long id;
 
     @NotBlank
+    @Size(min = 3, max = 10, message = "must be between 3 and 10 characters")
     private  String comment;
 
 

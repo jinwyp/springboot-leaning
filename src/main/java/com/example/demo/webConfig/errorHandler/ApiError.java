@@ -2,10 +2,12 @@ package com.example.demo.webConfig.errorHandler;
 
 import com.example.demo.webConfig.businessException.BusinessException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -61,6 +63,11 @@ public class ApiError {
         this.exceptionName = ex.getClass().getName();
     }
 
+    /**
+     * GET Query 参数数据缺少字段异常 @RequestParam
+     * @param ex
+     * @param url
+     */
     public ApiError(MissingServletRequestParameterException ex, String url) {
         this.code = 4000;
         this.message = "Field validation error. " + ex.getMessage();
@@ -69,6 +76,43 @@ public class ApiError {
         this.exceptionName = ex.getClass().getName();
     }
 
+
+    /**
+     * GET Query 参数数据类型异常 @RequestParam
+     * @param ex
+     * @param url
+     */
+    public ApiError(MethodArgumentTypeMismatchException ex, String url) {
+        this.code = 4000;
+        this.message = "Field validation error, " + ex.getName() + " field " + ex.getErrorCode() + ". " + ex.getMessage();
+        this.field = ex.getName();
+        this.url = url;
+        this.exceptionName = ex.getClass().getName();
+    }
+
+    /**
+     * GET Query 参数数据类型异常 @ModelAttribute
+     * @param ex
+     * @param url
+     */
+    public ApiError(BindException ex, String url) {
+        BindingResult result = ex.getBindingResult();
+
+        for (FieldError singleField : result.getFieldErrors()){
+            this.field = singleField.getObjectName() + "." + singleField.getField();
+            this.message = "Field validation error, " + singleField.getField() + " field " + singleField.getDefaultMessage();
+        }
+
+        this.code = 4000;
+        this.url = url;
+        this.exceptionName = ex.getClass().getName();
+    }
+
+    /**
+     * POST Body 解析JSON 数据类型异常
+     * @param ex
+     * @param url
+     */
     public ApiError(HttpMessageNotReadableException ex, String url) {
 
         Throwable mostSpecificCause = ex.getMostSpecificCause();
@@ -85,6 +129,12 @@ public class ApiError {
         }
     }
 
+
+    /**
+     * POST Body 数据验证异常
+     * @param ex
+     * @param url
+     */
     public ApiError(MethodArgumentNotValidException ex, String url) {
 
         BindingResult result = ex.getBindingResult();
@@ -98,6 +148,8 @@ public class ApiError {
         this.url = url;
         this.exceptionName = ex.getClass().getName();
     }
+
+
 
 
     public ApiError(int code, Exception ex, String url) {

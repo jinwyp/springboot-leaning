@@ -23,7 +23,7 @@ public class TestController {
 
     @GetMapping(value = "/person")
     public String getPerson(
-            @RequestParam(value="id", defaultValue = "10") long id,
+            @RequestParam(value="id") long id,
             @RequestParam(value="comment", required = true) String comment
     ) {
 
