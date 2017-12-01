@@ -1,6 +1,7 @@
 package com.example.demo.webConfig.errorHandler;
 
 import com.example.demo.webConfig.businessException.BusinessException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -68,11 +69,25 @@ public class ApiError {
         this.exceptionName = ex.getClass().getName();
     }
 
+    public ApiError(HttpMessageNotReadableException ex, String url) {
+
+        Throwable mostSpecificCause = ex.getMostSpecificCause();
+
+        this.code = 4000;
+        this.field = "";
+        this.message = "Field validation error. ";
+        this.url = url;
+        this.exceptionName = ex.getClass().getName();
+
+        if (mostSpecificCause != null) {
+            this.exceptionName = this.exceptionName + " | " + mostSpecificCause.getClass().getName();
+            this.message = this.message + mostSpecificCause.getMessage();
+        }
+    }
 
     public ApiError(MethodArgumentNotValidException ex, String url) {
 
         BindingResult result = ex.getBindingResult();
-
 
         for (FieldError singleField : result.getFieldErrors()){
             this.field = singleField.getObjectName() + "." + singleField.getField();

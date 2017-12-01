@@ -5,6 +5,7 @@ import com.example.demo.webConfig.businessException.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,7 +44,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError noHandlerFoundException(Exception ex, HttpServletRequest request) throws IOException {
 
-        logger.error(" \n ==================== 404 Error : " +  ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 5, ""));
+        logger.error(" \n ==================== 404 Error : " + ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 5, ""));
         return new ApiError(404, ex, makeUrl(request));
     }
 
@@ -52,9 +53,11 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError businessException(BusinessException ex, HttpServletRequest request) {
 
-        logger.error("\n ==================== 409 Error : " +  ex.getMessage()  + ". Code: " + ex.getCode() + ". Message: "+ ex.getErrorMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        logger.error("\n ==================== 409 Error : " + ex.getMessage() + ". Code: " + ex.getCode() + ". Message: " + ex.getErrorMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
         return new ApiError(ex, makeUrl(request));
     }
+
+
 
 
 
@@ -71,7 +74,24 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError missingServletRequestParameterException(MissingServletRequestParameterException ex, HttpServletRequest request) {
 
-        logger.error(" \n ==================== 400 Error : " +  ex.getMessage() + "\n ===== Request Url: " + makeUrl(request)  + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        logger.error(" \n ==================== 400 Error : " + ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        return new ApiError(ex, makeUrl(request));
+    }
+
+
+    /**
+     * POST Body 解析JSON 数据类型异常
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(value = {
+            HttpMessageNotReadableException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError httpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
+
+        logger.error(" \n ==================== 400 Error : " + ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
         return new ApiError(ex, makeUrl(request));
     }
 
@@ -88,7 +108,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError methodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
 
-        logger.error(" \n ==================== 400 Error : " +  ex.getMessage() + "\n ===== Request Url: " + makeUrl(request)  + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        logger.error(" \n ==================== 400 Error : " + ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
         return new ApiError(ex, makeUrl(request));
     }
 
@@ -118,8 +138,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError unknownException(Exception ex, HttpServletRequest request) {
 
-        logger.error(" \n ==================== 500 Error : ", ex.getMessage(), ex);
-        return new ApiError(500, ex.getMessage());
+        logger.error(" \n ==================== 500 Error : ", ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        return new ApiError(500, ex, makeUrl(request));
     }
 
 
