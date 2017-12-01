@@ -39,6 +39,10 @@ public class ResponseAdvisorObject implements ResponseBodyAdvice<Object>{
             return body;
         }
 
+        if (body instanceof ApiError){
+            return new ApiErrorResponse(body);
+        }
+
         return new ApiSuccessResponse(body);
     }
 

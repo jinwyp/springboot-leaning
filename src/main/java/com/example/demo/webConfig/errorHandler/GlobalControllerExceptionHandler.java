@@ -6,12 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -37,33 +41,74 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(value = { NoHandlerFoundException.class })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrorResponse noHandlerFoundException(Exception ex) {
+    public ApiError noHandlerFoundException(Exception ex, HttpServletRequest request) throws IOException {
 
-        logger.error(" \n ==================== 404 Error : " +  ex.getMessage(), ex);
-        return new ApiErrorResponse(404, ex.getMessage());
+        logger.error(" \n ==================== 404 Error : " +  ex.getMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 5, ""));
+        return new ApiError(404, ex, makeUrl(request));
     }
 
 
-    @ExceptionHandler(value = {
-            BusinessException.class
-    })
+    @ExceptionHandler(value = { BusinessException.class })
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiErrorResponse businessException(BusinessException ex) {
+    public ApiError businessException(BusinessException ex, HttpServletRequest request) {
 
-        logger.error("\n ==================== 400 Error : " +  ex.getMessage()  + ". Code: " + ex.getCode() + ". Message: "+ ex.getErrorMessage() + "\n" + stackTraceToString(ex, "com.example.demo", 0));
-        return new ApiErrorResponse(ex.getCode(), ex.getErrorMessage());
+        logger.error("\n ==================== 409 Error : " +  ex.getMessage()  + ". Code: " + ex.getCode() + ". Message: "+ ex.getErrorMessage() + "\n ===== Request Url: " + makeUrl(request) + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        return new ApiError(ex, makeUrl(request));
     }
 
 
+
+
+    /**
+     * GET Query 参数数据验证异常
+     * @param ex
+     * @param request
+     * @return
+     */
     @ExceptionHandler(value = {
-            ConstraintViolationException.class,
-            MethodArgumentNotValidException.class
+        MissingServletRequestParameterException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse constraintViolationException(ConstraintViolationException ex) {
+    public ApiError missingServletRequestParameterException(MissingServletRequestParameterException ex, HttpServletRequest request) {
+
+        logger.error(" \n ==================== 400 Error : " +  ex.getMessage() + "\n ===== Request Url: " + makeUrl(request)  + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        return new ApiError(ex, makeUrl(request));
+    }
+
+
+    /**
+     * POST Body 数据验证异常
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(value = {
+        MethodArgumentNotValidException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError methodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+
+        logger.error(" \n ==================== 400 Error : " +  ex.getMessage() + "\n ===== Request Url: " + makeUrl(request)  + "\n" + stackTraceToString(ex, 0, "com.example.demo"));
+        return new ApiError(ex, makeUrl(request));
+    }
+
+
+
+
+    /**
+     * 数据验证异常
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(value = {
+        ConstraintViolationException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError constraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
 
         logger.error(" \n ==================== 400 Error : ", ex.getMessage(), ex);
-        return new ApiErrorResponse(1001, ex.getMessage());
+        return new ApiError(1001, ex.getMessage());
     }
 
 
@@ -71,10 +116,10 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(value = { Exception.class })
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiErrorResponse unknownException(Exception ex) {
+    public ApiError unknownException(Exception ex, HttpServletRequest request) {
 
         logger.error(" \n ==================== 500 Error : ", ex.getMessage(), ex);
-        return new ApiErrorResponse(500, ex.getMessage());
+        return new ApiError(500, ex.getMessage());
     }
 
 
@@ -93,7 +138,7 @@ public class GlobalControllerExceptionHandler {
      * @return string
      */
 
-    public static String stackTraceToString(Throwable exceptionOriginal, String packageName, int showLines) {
+    public static String stackTraceToString(Throwable exceptionOriginal, int showLines, String packageName) {
         StringWriter sw = new StringWriter();
         exceptionOriginal.printStackTrace(new PrintWriter(sw, true));
 
@@ -102,6 +147,7 @@ public class GlobalControllerExceptionHandler {
         if (packageName == null) {
             return tempString;
         }
+
         String[] arrs = tempString.split("\n");
         StringBuffer sbuf = new StringBuffer();
         sbuf.append(arrs[0] + "\n");
@@ -117,6 +163,11 @@ public class GlobalControllerExceptionHandler {
                 sbuf.append(temp + "\n");
             }
         } else {
+
+            if (packageName.isEmpty()) {
+                return tempString;
+            }
+
             for (int i = 1; i < arrs.length; i++) {
                 String temp = arrs[i];
                 if (temp != null && temp.indexOf(packageName) > 0) {
@@ -125,8 +176,27 @@ public class GlobalControllerExceptionHandler {
             }
         }
 
-
         return sbuf.toString();
     }
+
+
+
+
+    /**
+     * https://stackoverflow.com/questions/1490821/whats-the-best-way-to-get-the-current-url-in-spring-mvc
+     *
+     * @param request
+     * @return
+     */
+    public static String makeUrl(HttpServletRequest request) {
+
+        if (request.getQueryString() == null) {
+            return request.getRequestURL().toString();
+        }
+
+        return request.getRequestURL().toString() + "?" + request.getQueryString();
+    }
+
+
 }
 

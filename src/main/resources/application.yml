@@ -5,7 +5,8 @@
 
 # EMBEDDED SERVER CONFIGURATION (ServerProperties)
 
-server.port=8090
+server:
+  port: 8090
 
 
 
@@ -14,10 +15,20 @@ server.port=8090
 
 
 # Log levels severity mapping. For instance `logging.level.org.springframework=DEBUG`
-logging.level.org.springframework=INFO
-logging.level.com.example.demo.demo.controller=DEBUG
-logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG
-logging.level.org.springframework.aop.interceptor.JamonPerformanceMonitorInterceptor=TRACE
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+        aop:
+          interceptor:
+            JamonPerformanceMonitorInterceptor: TRACE
+    com:
+      example:
+        demo: DEBUG
+
 
 
 # SPRING MVC (WebMvcProperties)
@@ -25,15 +36,15 @@ logging.level.org.springframework.aop.interceptor.JamonPerformanceMonitorInterce
 
 # https://stackoverflow.com/questions/28902374/spring-boot-rest-service-exception-handling/30193013#30193013
 # If a "NoHandlerFoundException" should be thrown if no Handler was found to process a request.
-spring.mvc.throw-exception-if-no-handler-found=true 
-
-
 
 
 # SPRING RESOURCES HANDLING (ResourceProperties)
-
-
 # Disable default resource handling. Not redirect to 404
-spring.resources.add-mappings=false  
 
+
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
 

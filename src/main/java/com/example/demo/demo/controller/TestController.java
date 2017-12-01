@@ -24,7 +24,7 @@ public class TestController {
     @GetMapping(value = "/person")
     public String getPerson(
             @RequestParam(value="id", defaultValue = "10") long id,
-            @RequestParam(value="comment", defaultValue = "") String comment
+            @RequestParam(value="comment", required = true) String comment
     ) {
 
         if (comment == null || comment.isEmpty() ) {
@@ -56,8 +56,7 @@ public class TestController {
 
 
     @PostMapping(value = "/person")
-    public Person savePerson(
-            @RequestBody @Valid Person person
+    public Person savePerson(@RequestBody @Valid Person person
     ) {
 
         logger.debug("This is a debug message");
@@ -72,7 +71,7 @@ public class TestController {
 
 
 
-    @PostMapping("/person/new")
+    @PostMapping("/article")
     public Person savePerson2( @RequestBody @Valid Person person) {
 
         logger.info("-------------- This is an info message");

@@ -2,24 +2,23 @@ package com.example.demo.webConfig.errorHandler;
 
 public class ApiErrorResponse {
 
+
+
     private boolean status = false;
-    private int code;
-    private String message;
+    private Object error;
 
 
-    public ApiErrorResponse(int code) {
-        this.code = code;
-        this.message = "";
+    public ApiErrorResponse(Object err) {
+        this.error = err;
+    }
+
+    public ApiErrorResponse(Boolean status, Object err) {
+        this.status = status;
+        this.error = err;
     }
 
 
-    public ApiErrorResponse(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -27,29 +26,14 @@ public class ApiErrorResponse {
         this.status = status;
     }
 
-    public int getCode() {
-        return code;
+    public Object getError() {
+        return error;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setError(Object error) {
+        this.error = error;
     }
 
 
-    @Override
-    public String toString() {
-        return "ApiErrorResponse{" +
-                ", code=" + code +
-                ", message=" + message +
-                '}';
-    }
 
 }
