@@ -1,24 +1,26 @@
-package com.example.demo.demo.controller;
+package com.example.demo.demo.apiController;
 
 
 import com.example.demo.demo.formModel.Person;
 import com.example.demo.webConfig.businessException.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/api")
-public class TestController {
+public class ApiController {
 
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @GetMapping(value = "/err")
+    public String getErr() throws Exception{
+
+        throw new Exception("发生错误");
+    }
 
 
     @GetMapping(value = "/person")
@@ -78,6 +80,8 @@ public class TestController {
 
         return person;
     }
+
+
 
 
 }

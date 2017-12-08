@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 
@@ -31,19 +32,21 @@ public class ResponseAdvisorObject implements ResponseBodyAdvice<Object>{
             ServerHttpResponse response
     ){
         String requestPath = request.getURI().getPath();
-        if (!requestPath.startsWith("/api")) {
-            return body;
+
+        if (requestPath.startsWith("/api")) {
+
+            if (body instanceof ApiError){
+                return new ApiErrorResponse(body);
+            }
+
+            if (body instanceof ApiSuccessResponse) {
+                return body;
+            }
+
+            return new ApiSuccessResponse(body);
         }
 
-        if (body instanceof ApiSuccessResponse) {
-            return body;
-        }
-
-        if (body instanceof ApiError){
-            return new ApiErrorResponse(body);
-        }
-
-        return new ApiSuccessResponse(body);
+        return body;
     }
 
 }
