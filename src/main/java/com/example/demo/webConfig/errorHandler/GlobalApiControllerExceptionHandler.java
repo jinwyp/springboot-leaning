@@ -5,6 +5,7 @@ import com.example.demo.webConfig.businessException.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -37,7 +38,7 @@ import java.io.IOException;
 
 
 
-@RestControllerAdvice("com.example.demo.demo.apiController")
+@RestControllerAdvice
 public class GlobalApiControllerExceptionHandler {
 
 
