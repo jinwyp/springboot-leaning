@@ -5,6 +5,7 @@ import com.example.demo.demo.formModel.Person;
 import com.example.demo.webConfig.businessException.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +14,8 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class ApiController {
 
+    @Value("${global.name}")
+    private String globalName;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -35,7 +38,7 @@ public class ApiController {
         }
 
 
-        return comment;
+        return globalName;
     }
 
     @GetMapping(value = "/person2")
