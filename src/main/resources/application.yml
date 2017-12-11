@@ -50,3 +50,20 @@ spring:
   resources:
     add-mappings: false
 
+  data:
+
+    rest:
+      base-path: api
+      return-body-on-create: true
+      return-body-on-update: true
+
+    mongodb:
+      database: springdb
+      host: localhost
+      port: 27017
+
+
+# MONGODB (MongoProperties)
+
+
+
