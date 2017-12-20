@@ -84,7 +84,7 @@
 
 - Content-Type: 是 text/html; charset=utf-8, 根据200 ,400, 404 , 500 返回不同的页面, 使用不同thymeleaf view模版。 
 
-- @ControllerAdvice 是个全局异常处理 很难解决这个问题, 尤其是404的时候的不同处理. 试过用ControllerAdvice限制不同的包名, 效果达不到.
+- @ControllerAdvice 是个全局异常处理 很难解决这个问题, 只能返回html或json, 无法根据类型不同 返回不同的格式. 尤其是404的时候的不同处理. 试过用ControllerAdvice限制不同的包名, 效果达不到.
 
 
 
