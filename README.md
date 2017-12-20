@@ -8,11 +8,14 @@
 
 2. 错误处理完善, 在 GlobalApiControllerExceptionHandler 里面处理了常用的表单提交的错误, 并且根据不同异常类型返回详细的错误信息。
 
-3. spring-boot-starter-data-rest 自动生成基础的CRUD 接口
+3. spring-boot-starter-data-rest 自动生成基础的CRUD 接口, 并返回数据中带有数据ID字段.
 
 4. spring-boot-devtool 自动编译
 
 5. 友好的异常信息显示, 4xx错误只显示本项目的异常, 隐藏了冗长的spring框架的异常, 5xx 错误可以控制显示多少行异常信息.
+
+6. 去掉了默认的404
+
 
 
 
@@ -89,7 +92,7 @@
 - 目前 通过新版本 1.5.8 CommonsRequestLoggingFilter 仅能显示request header 和 请求的信息, 无法显示response 信息. 
 - CommonsRequestLoggingFilter 无法定制想要的格式 只能显示在一行上 例如 url参数请求显示为 ===== Request : [uri=/api/err?id=100], post body 显示为 ===== Request : [uri=/api/article;payload=comment=Ce33&id=111]
 - 错误异常信息定制和美化显示, 目前只做到了过滤某个包名的错误, 例如只显示该项目的错误不包括spring的异常,这样方便看,默认异常显示太多,无用信息太多。 但无法美化, 例如 像nodejs库这样的高亮和空行 [pretty-error]https://github.com/AriaMinaei/pretty-error
-- 无法显示像 nodejs koa2 或PHP 框架这种友好的请求信息显示
+- 无法显示像 nodejs koa2 或PHP 框架这种友好的请求信息显示, 包括状态码和请求耗时.
 ```
   <-- POST /api/user/login
   xxx POST /api/user/login 400 374ms -
