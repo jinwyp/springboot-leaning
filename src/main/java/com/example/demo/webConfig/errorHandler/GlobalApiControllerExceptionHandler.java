@@ -38,7 +38,7 @@ import java.io.IOException;
 
 
 
-@RestControllerAdvice
+@RestControllerAdvice()
 public class GlobalApiControllerExceptionHandler {
 
 
