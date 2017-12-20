@@ -1,7 +1,7 @@
 # Spring Boot learning
 
 
-### 项目特点
+## 项目特点
 
 1. 通过配置json文件 定义业务4xx类型的错误信息, 配置文件在 resource/errorMessage.json。 好处是容易定制并可以直接给复制代码给前端使用。 
 使用方式: 通过 ```throw new BusinessException("commentRequired")``` 就是参数是json配置文件的key的名称 ; 
@@ -19,7 +19,7 @@
 
 
 
-### 问题
+## 问题
 
 1. 无法通过 request header 的 Content-Type 类型返回页面还是json.   
 
