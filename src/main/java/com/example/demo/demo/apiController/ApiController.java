@@ -38,7 +38,7 @@ public class ApiController {
         }
 
 
-        return globalName;
+        return comment;
     }
 
     @GetMapping(value = "/person2")

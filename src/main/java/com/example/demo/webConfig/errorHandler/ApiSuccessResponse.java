@@ -6,6 +6,7 @@ public class ApiSuccessResponse {
 
     private Object data;
 
+
     public ApiSuccessResponse(Object data) {
         this.data = data;
     }

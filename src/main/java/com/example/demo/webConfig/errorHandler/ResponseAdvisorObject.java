@@ -8,6 +8,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import sun.rmi.runtime.Log;
 
 
 @ControllerAdvice
@@ -33,6 +34,7 @@ public class ResponseAdvisorObject implements ResponseBodyAdvice<Object>{
     ){
         String requestPath = request.getURI().getPath();
 
+        System.out.println(body.getClass());
 
         if (body instanceof ApiError){
             return new ApiErrorResponse(body);
