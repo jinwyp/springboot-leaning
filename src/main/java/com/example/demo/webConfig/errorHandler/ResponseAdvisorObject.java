@@ -48,6 +48,10 @@ public class ResponseAdvisorObject implements ResponseBodyAdvice<Object>{
 
             // http://www.voidcn.com/article/p-pzmzleow-bou.html
 
+            if (body instanceof String) {
+
+                return ApiSuccessResponse.toJSON(body);
+            }
             return new ApiSuccessResponse(body);
         }
 
