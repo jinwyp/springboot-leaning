@@ -34,7 +34,7 @@ public class ResponseAdvisorObject implements ResponseBodyAdvice<Object>{
     ){
         String requestPath = request.getURI().getPath();
 
-        System.out.println(body.getClass());
+//        System.out.println(body.getClass());
 
         if (body instanceof ApiError){
             return new ApiErrorResponse(body);
@@ -45,6 +45,8 @@ public class ResponseAdvisorObject implements ResponseBodyAdvice<Object>{
         }
 
         if (requestPath.startsWith("/api")) {
+
+            // http://www.voidcn.com/article/p-pzmzleow-bou.html
 
             return new ApiSuccessResponse(body);
         }

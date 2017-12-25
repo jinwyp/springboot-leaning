@@ -17,6 +17,9 @@ public class DemoWebMVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private DemoRequestInterceptor demoInterceptor ;
 
+    @Autowired
+    private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -29,7 +32,7 @@ public class DemoWebMVCConfig extends WebMvcConfigurerAdapter {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters){
 
         super.configureMessageConverters(converters);
-        converters.add(0, new MappingJackson2HttpMessageConverter());
+        converters.add(0, mappingJackson2HttpMessageConverter);
     }
 
 
