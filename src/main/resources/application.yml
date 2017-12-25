@@ -10,7 +10,7 @@ global:
 # EMBEDDED SERVER CONFIGURATION (ServerProperties)
 
 server:
-  port: 8090
+  port: 8091
   error:
     whitelabel:
       enabled: false
